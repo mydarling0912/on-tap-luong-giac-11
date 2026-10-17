@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Ôn Tập Công Thức Lượng Giác 11 - Bài Tập Nhóm 1</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <!-- Tailwind CSS CDN -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Cấu hình MathJax 3 hiển thị công thức toán học -->
   <script>
     window.MathJax = {
       tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
@@ -15,32 +13,165 @@
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
-
   <style>
-    /* Chống bôi đen văn bản ngoài ý muốn khi kéo thẻ trên thiết bị cảm ứng */
+    :root {
+      color-scheme: light;
+      --app-primary: #4f46e5;
+      --app-border: #e2e8f0;
+      --app-muted: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      line-height: 1.55;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button, input, textarea { font: inherit; }
+    button { touch-action: manipulation; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid #a5b4fc;
+      outline-offset: 2px;
+    }
     .touch-none-select {
       touch-action: none;
       -webkit-user-select: none;
       user-select: none;
     }
-    .ghost-card {
-      opacity: 0.35;
-      transform: scale(0.96);
-    }
+    .ghost-card { opacity: 0.35; transform: scale(0.96); }
     .drop-active {
-      background-color: #fef08a !important;
-      border-color: #eab308 !important;
-      box-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+      background-color: #fef3c7 !important;
+      border-color: #f59e0b !important;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.13);
     }
     .selected-card {
-      outline: 3px solid #2563eb;
-      background-color: #dbeafe !important;
+      outline: 2px solid #4f46e5;
+      outline-offset: 1px;
+      background-color: #eef2ff !important;
+      border-color: #818cf8 !important;
+    }
+    #screen-welcome > div, #screen-success > div {
+      border-radius: 22px;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.07);
+    }
+    #screen-welcome h1 { line-height: 1.25; letter-spacing: -0.025em; }
+    #screen-exercise > header { position: relative; z-index: 10; gap: 12px; }
+    #current-section-title { line-height: 1.5; }
+    #current-section-note {
+      max-width: 55%;
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+    .nav-tab-btn {
+      white-space: nowrap;
+      min-height: 36px;
+      flex-shrink: 0;
+      transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+    }
+    #exercise-content-scroll {
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+    }
+    #exercise-content-scroll > div { min-width: 0; }
+    #exercise-content-scroll .bg-slate-50\/70 {
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .dropzone {
+      flex-shrink: 0;
+      min-width: 0;
+      min-height: 48px;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+      transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .dropzone mjx-container, .formula-card mjx-container { max-width: 100%; }
+    .dropzone mjx-container[display="true"], .formula-card mjx-container[display="true"] {
+      margin: 0 !important;
+    }
+    .formula-card {
+      max-width: 100%;
+      min-height: 42px;
+      border-radius: 11px;
+      overflow-wrap: anywhere;
+      transition: border-color .16s ease, background-color .16s ease, transform .16s ease;
+    }
+    .formula-card:not(.ghost-card):active { transform: scale(.98); }
+    #cards-vault-scroll { align-content: flex-start; overscroll-behavior: contain; }
+    #cards-vault-scroll .formula-card { min-height: 44px; justify-content: center; }
+    #modal-confirm > div { border-radius: 20px; }
+    #modal-confirm button { min-height: 40px; }
+
+    @media (max-width: 767px) {
+      body { min-height: 100dvh; }
+      #screen-welcome, #screen-success { padding: 16px; }
+      #screen-welcome > div, #screen-success > div { padding: 22px; }
+      #screen-exercise {
+        height: auto;
+        min-height: 100dvh;
+        overflow: visible;
+      }
+      #screen-exercise > header {
+        padding: 12px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #screen-exercise > header > div:first-child { justify-content: space-between; }
+      #screen-exercise nav {
+        width: 100%;
+        max-width: 100%;
+        padding-bottom: 6px;
+        scrollbar-width: thin;
+      }
+      #screen-exercise > header > div:last-child { justify-content: space-between; }
+      #screen-exercise main {
+        flex: initial;
+        overflow: visible;
+        flex-direction: column;
+        padding: 10px;
+        gap: 12px;
+      }
+      #screen-exercise main > section {
+        flex: initial;
+        min-width: 0;
+        min-height: 0;
+      }
+      #exercise-content-scroll { overflow: visible; padding: 12px; }
+      #screen-exercise main > aside {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        flex-shrink: 1;
+      }
+      #cards-vault-scroll {
+        min-height: 100px;
+        max-height: 34dvh;
+        overflow-y: auto;
+        padding: 10px;
+      }
+      #exercise-content-scroll .flex.items-center.justify-between { align-items: stretch; }
+      .dropzone { width: 100%; min-height: 48px; }
+      #current-section-note { max-width: 48%; font-size: 11px; }
+    }
+    @media (max-width: 420px) {
+      #screen-welcome h1 { font-size: 23px; }
+      #screen-welcome .text-base { font-size: 14px; }
+      #exercise-content-scroll { padding: 9px; }
+      #exercise-content-scroll .bg-slate-50\/70 { padding: 10px; }
+      #current-section-title { font-size: 12px; }
+      .nav-tab-btn { padding: 7px 10px; font-size: 11px; }
+      .formula-card { padding: 8px 10px; font-size: 13px; }
+      #btn-submit-work { padding: 10px 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
-
-  <!-- MÀN HÌNH 1: BẮT ĐẦU VÀ NHẬP THÔNG TIN NHÓM -->
   <section id="screen-welcome" class="flex-1 flex items-center justify-center p-4">
     <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8 space-y-6">
       <div class="text-center space-y-2 border-b border-slate-100 pb-5">
@@ -51,28 +182,22 @@
         <p class="text-sm text-slate-500 font-medium">Hàm số lượng giác và phương trình lượng giác</p>
         <div class="mt-2 text-base font-bold text-slate-700">NHÓM 1 – GÓC LƯỢNG GIÁC VÀ GIÁ TRỊ LƯỢNG GIÁC</div>
       </div>
-
       <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 leading-relaxed">
         <strong>Hướng dẫn:</strong> Quan sát vế trái của mỗi công thức. Kéo thẻ chứa vế phải thích hợp (hoặc chạm vào thẻ rồi chạm vào ô đích) để khôi phục công thức hoàn chỉnh. Các thành viên trong nhóm cần thảo luận và thống nhất trước khi nộp kết quả.
       </div>
-
       <form id="group-form" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tên nhóm <span class="text-rose-500">*</span></label>
-          <input type="text" id="input-group-name" value="Nhóm 1" required
-                 class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <input type="text" id="input-group-name" value="Nhóm 1" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Lớp <span class="text-rose-500">*</span></label>
-          <input type="text" id="input-class-name" placeholder="Ví dụ: 11A1" required
-                 class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <input type="text" id="input-class-name" placeholder="Ví dụ: 11A1" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Danh sách thành viên (Tùy chọn)</label>
-          <textarea id="input-members" rows="2" placeholder="Nguyễn Văn A, Trần Thị B..."
-                    class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+          <textarea id="input-members" rows="2" placeholder="Nguyễn Văn A, Trần Thị B..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
         </div>
-
         <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98]">
           BẮT ĐẦU ÔN TẬP
         </button>
@@ -80,87 +205,51 @@
     </div>
   </section>
 
-  <!-- MÀN HÌNH 2: KHÔNG GIAN LÀM BÀI ÔN TẬP -->
   <section id="screen-exercise" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
-    <!-- Header thông tin & Điều hướng các phần -->
     <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-sm">
       <div class="flex items-center gap-2">
         <span id="badge-group" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-0.5 rounded-full">Nhóm 1</span>
         <span id="badge-class" class="text-xs text-slate-500 font-semibold">11A1</span>
       </div>
-
-      <!-- 4 Tab điều hướng phần -->
       <nav class="flex items-center gap-1.5 overflow-x-auto py-1">
-        <button data-sec="sec_A" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-rose-200 bg-rose-50 text-rose-700 transition">
-          A. Độ – Radian
-        </button>
-        <button data-sec="sec_B" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition">
-          B. Giá trị lượng giác
-        </button>
-        <button data-sec="sec_C" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition">
-          C. Hệ thức cơ bản
-        </button>
-        <button data-sec="sec_D" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
-          D. Quan hệ giữa các góc
-        </button>
+        <button data-sec="sec_A" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-rose-200 bg-rose-50 text-rose-700 transition">A. Độ – Radian</button>
+        <button data-sec="sec_B" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition">B. Giá trị lượng giác</button>
+        <button data-sec="sec_C" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition">C. Hệ thức cơ bản</button>
+        <button data-sec="sec_D" class="nav-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">D. Quan hệ giữa các góc</button>
       </nav>
-
-      <!-- Tiến độ & Nộp bài -->
       <div class="flex items-center gap-3">
         <div class="text-right">
           <div class="text-xs text-slate-500 font-medium">Tiến độ ghép</div>
           <div id="progress-indicator" class="text-sm font-extrabold text-indigo-600">0/28</div>
         </div>
-        <button id="btn-submit-work" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed">
-          NỘP KẾT QUẢ
-        </button>
+        <button id="btn-submit-work" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed">NỘP KẾT QUẢ</button>
       </div>
     </header>
 
-    <!-- Khu vực làm việc chính (Chia 2 cột trên Laptop / Dọc trên Mobile) -->
     <main class="flex-1 flex flex-col md:flex-row overflow-hidden p-3 gap-3">
-      
-      <!-- Cột Trái: Bảng công thức vế trái và ô đích -->
       <section class="flex-1 bg-white rounded-2xl border border-slate-200 flex flex-col overflow-hidden shadow-sm">
-        <div id="section-header-banner" class="px-4 py-2.5 bg-rose-50 border-b border-rose-200 flex items-center justify-between">
+        <div id="section-header-banner" class="px-4 py-2.5 bg-rose-50 border-b border-rose-200 flex items-center justify-between gap-3">
           <h2 id="current-section-title" class="text-sm font-bold text-rose-800">A. ĐỔI ĐƠN VỊ GÓC</h2>
-          <span id="current-section-note" class="text-xs text-rose-700 bg-white/70 px-2 py-0.5 rounded border border-rose-200">
-            $180^\circ = \pi\text{ rad}$
-          </span>
+          <span id="current-section-note" class="text-xs text-rose-700 bg-white/70 px-2 py-0.5 rounded border border-rose-200">$180^\circ = \pi\text{ rad}$</span>
         </div>
-
-        <div id="exercise-content-scroll" class="flex-1 overflow-y-auto p-4 space-y-4">
-          <!-- Các câu hỏi render động tại đây -->
-        </div>
+        <div id="exercise-content-scroll" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
       </section>
 
-      <!-- Cột Phải: Kho đáp án (Thẻ vế phải xáo trộn) -->
-      <aside class="w-full md:w-80 lg:w-96 bg-slate-100/80 rounded-2xl border border-slate-200 flex flex-col overflow-hidden shrink-0 shadow-sm">
-        <div class="px-4 py-2.5 bg-slate-200/60 border-b border-slate-300/80 flex items-center justify-between">
+      <aside class="w-full md:w-80 lg:w-96 bg-white rounded-2xl border border-slate-200 flex flex-col overflow-hidden shrink-0 shadow-sm">
+        <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between gap-2">
           <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Kho Thẻ Vế Phải</h3>
-          <button id="btn-return-all" title="Thu hồi các thẻ của phần này về kho" class="text-[11px] text-indigo-600 hover:underline font-semibold">
-            Thu về kho
-          </button>
+          <button id="btn-return-all" title="Thu hồi các thẻ của phần này về kho" class="text-[11px] text-indigo-600 hover:underline font-semibold whitespace-nowrap">Thu về kho</button>
         </div>
-
-        <div id="cards-vault-scroll" class="flex-1 overflow-y-auto p-3 flex flex-wrap content-start gap-2.5">
-          <!-- Các thẻ đáp án render động tại đây -->
-        </div>
+        <div id="cards-vault-scroll" class="flex-1 overflow-y-auto p-3 flex flex-wrap content-start gap-2.5"></div>
       </aside>
-
     </main>
   </section>
 
-  <!-- MÀN HÌNH 3: THÔNG BÁO GỬI BÀI THÀNH CÔNG -->
   <section id="screen-success" class="hidden flex-1 flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-8 text-center space-y-4">
-      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-black">
-        ✓
-      </div>
+      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-black">✓</div>
       <h2 class="text-xl font-extrabold text-slate-800">ĐÃ GỬI KẾT QUẢ THÀNH CÔNG</h2>
-      <p class="text-xs text-slate-600 leading-relaxed">
-        Kết quả của nhóm đã được ghi nhận nguyên trạng vào hệ thống. Hãy chờ giáo viên tổ chức nhận xét, hướng dẫn thảo luận và chuẩn hóa kiến thức trên lớp.
-      </p>
+      <p class="text-xs text-slate-600 leading-relaxed">Kết quả của nhóm đã được ghi nhận nguyên trạng vào hệ thống. Hãy chờ giáo viên tổ chức nhận xét, hướng dẫn thảo luận và chuẩn hóa kiến thức trên lớp.</p>
       <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-left text-xs text-slate-500 space-y-1">
         <div><strong>Mã bài làm:</strong> <span id="label-sub-id" class="font-mono text-slate-700 font-bold"></span></div>
         <div><strong>Nhóm:</strong> <span id="label-group-info" class="text-slate-700 font-semibold"></span></div>
@@ -169,35 +258,23 @@
     </div>
   </section>
 
-  <!-- HỘP THOẠI XÁC NHẬN NỘP BÀI -->
   <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-100">
       <h4 class="text-base font-bold text-slate-800">Xác Nhận Nộp Kết Quả</h4>
-      <p class="text-xs text-slate-600 leading-relaxed">
-        Nhóm đã hoàn thành 28/28 công thức. Các em có chắc chắn muốn nộp kết quả để giáo viên kiểm tra không?
-      </p>
+      <p class="text-xs text-slate-600 leading-relaxed">Nhóm đã hoàn thành 28/28 công thức. Các em có chắc chắn muốn nộp kết quả để giáo viên kiểm tra không?</p>
       <div class="flex gap-2 justify-end pt-2">
-        <button id="btn-cancel-modal" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">
-          Quay lại chỉnh sửa
-        </button>
-        <button id="btn-confirm-submit" class="px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow transition">
-          Xác nhận nộp
-        </button>
+        <button id="btn-cancel-modal" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">Quay lại chỉnh sửa</button>
+        <button id="btn-confirm-submit" class="px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow transition">Xác nhận nộp</button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT ĐIỀU KHIỂN HOẠT ĐỘNG HỌC TẬP -->
   <script>
-    // 1. DỮ LIỆU CÔNG THỨC TOÁN NHÓM 1 (GDPT 2018)
     const APP_DATA = {
       meta: { questionSet: "TRIG_G1", version: "1.0", totalQuestions: 28 },
       sections: [
         {
-          id: "sec_A",
-          title: "A. ĐỔI ĐƠN VỊ GÓC",
-          note: "180^\\circ = \\pi\\text{ rad}",
-          color: "rose",
+          id: "sec_A", title: "A. ĐỔI ĐƠN VỊ GÓC", note: "180^\\circ = \\pi\\text{ rad}", color: "rose",
           questions: [
             { id: "A1", leftText: "Đổi góc \\alpha^\\circ \\text{ sang radian}", correctVal: "\\frac{\\alpha\\pi}{180}\\text{ rad}" },
             { id: "A2", leftText: "Đổi góc \\alpha\\text{ rad sang độ}", correctVal: "\\left(\\frac{180\\alpha}{\\pi}\\right)^\\circ" }
@@ -208,11 +285,7 @@
           ]
         },
         {
-          id: "sec_B",
-          title: "B. GIÁ TRỊ LƯỢNG GIÁC CỦA GÓC \\alpha",
-          note: "Đường tròn đơn vị bán kính R = 1",
-          color: "blue",
-          hasSvg: true,
+          id: "sec_B", title: "B. GIÁ TRỊ LƯỢNG GIÁC CỦA GÓC \\alpha", note: "Đường tròn đơn vị bán kính R = 1", color: "blue", hasSvg: true,
           conditions: ["\\tan\\alpha\\text{ xác định khi } x \\neq 0", "\\cot\\alpha\\text{ xác định khi } y \\neq 0"],
           questions: [
             { id: "B1", leftText: "\\sin\\alpha =", correctVal: "y" },
@@ -221,17 +294,12 @@
             { id: "B4", leftText: "\\cot\\alpha =", correctVal: "\\frac{x}{y}" }
           ],
           cards: [
-            { id: "C_B1", latex: "y", val: "y" },
-            { id: "C_B2", latex: "x", val: "x" },
-            { id: "C_B3", latex: "\\frac{y}{x}", val: "\\frac{y}{x}" },
-            { id: "C_B4", latex: "\\frac{x}{y}", val: "\\frac{x}{y}" }
+            { id: "C_B1", latex: "y", val: "y" }, { id: "C_B2", latex: "x", val: "x" },
+            { id: "C_B3", latex: "\\frac{y}{x}", val: "\\frac{y}{x}" }, { id: "C_B4", latex: "\\frac{x}{y}", val: "\\frac{x}{y}" }
           ]
         },
         {
-          id: "sec_C",
-          title: "C. HỆ THỨC LƯỢNG GIÁC CƠ BẢN",
-          note: "\\text{Xét tại các giá trị } x \\text{ mà biểu thức xác định}",
-          color: "emerald",
+          id: "sec_C", title: "C. HỆ THỨC LƯỢNG GIÁC CƠ BẢN", note: "\\text{Xét tại các giá trị } x \\text{ mà biểu thức xác định}", color: "emerald",
           questions: [
             { id: "C1", leftText: "\\tan x =", correctVal: "\\frac{\\sin x}{\\cos x}" },
             { id: "C2", leftText: "\\cot x =", correctVal: "\\frac{\\cos x}{\\sin x}" },
@@ -243,54 +311,38 @@
           cards: [
             { id: "C_C1", latex: "\\frac{\\sin x}{\\cos x}", val: "\\frac{\\sin x}{\\cos x}" },
             { id: "C_C2", latex: "\\frac{\\cos x}{\\sin x}", val: "\\frac{\\cos x}{\\sin x}" },
-            { id: "C_C3", latex: "1", val: "1" },
-            { id: "C_C4", latex: "1", val: "1" },
+            { id: "C_C3", latex: "1", val: "1" }, { id: "C_C4", latex: "1", val: "1" },
             { id: "C_C5", latex: "\\frac{1}{\\cos^2 x}", val: "\\frac{1}{\\cos^2 x}" },
             { id: "C_C6", latex: "\\frac{1}{\\sin^2 x}", val: "\\frac{1}{\\sin^2 x}" }
           ]
         },
         {
-          id: "sec_D",
-          title: "D. CÔNG THỨC LIÊN HỆ GIỮA CÁC GÓC",
-          note: "16 công thức liên kết",
-          color: "purple",
+          id: "sec_D", title: "D. CÔNG THỨC LIÊN HỆ GIỮA CÁC GÓC", note: "16 công thức liên kết", color: "purple",
           subGroups: [
-            {
-              subTitle: "D1. Góc đối nhau",
-              questions: [
-                { id: "D1_1", leftText: "\\cos(-x) =", correctVal: "\\cos x" },
-                { id: "D1_2", leftText: "\\sin(-x) =", correctVal: "-\\sin x" },
-                { id: "D1_3", leftText: "\\tan(-x) =", correctVal: "-\\tan x" },
-                { id: "D1_4", leftText: "\\cot(-x) =", correctVal: "-\\cot x" }
-              ]
-            },
-            {
-              subTitle: "D2. Góc bù nhau",
-              questions: [
-                { id: "D2_1", leftText: "\\sin(\\pi - x) =", correctVal: "\\sin x" },
-                { id: "D2_2", leftText: "\\cos(\\pi - x) =", correctVal: "-\\cos x" },
-                { id: "D2_3", leftText: "\\tan(\\pi - x) =", correctVal: "-\\tan x" },
-                { id: "D2_4", leftText: "\\cot(\\pi - x) =", correctVal: "-\\cot x" }
-              ]
-            },
-            {
-              subTitle: "D3. Góc phụ nhau",
-              questions: [
-                { id: "D3_1", leftText: "\\sin\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\cos x" },
-                { id: "D3_2", leftText: "\\cos\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\sin x" },
-                { id: "D3_3", leftText: "\\tan\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\cot x" },
-                { id: "D3_4", leftText: "\\cot\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\tan x" }
-              ]
-            },
-            {
-              subTitle: "D4. Góc hơn kém π",
-              questions: [
-                { id: "D4_1", leftText: "\\sin(\\pi + x) =", correctVal: "-\\sin x" },
-                { id: "D4_2", leftText: "\\cos(\\pi + x) =", correctVal: "-\\cos x" },
-                { id: "D4_3", leftText: "\\tan(\\pi + x) =", correctVal: "\\tan x" },
-                { id: "D4_4", leftText: "\\cot(\\pi + x) =", correctVal: "\\cot x" }
-              ]
-            }
+            { subTitle: "D1. Góc đối nhau", questions: [
+              { id: "D1_1", leftText: "\\cos(-x) =", correctVal: "\\cos x" },
+              { id: "D1_2", leftText: "\\sin(-x) =", correctVal: "-\\sin x" },
+              { id: "D1_3", leftText: "\\tan(-x) =", correctVal: "-\\tan x" },
+              { id: "D1_4", leftText: "\\cot(-x) =", correctVal: "-\\cot x" }
+            ]},
+            { subTitle: "D2. Góc bù nhau", questions: [
+              { id: "D2_1", leftText: "\\sin(\\pi - x) =", correctVal: "\\sin x" },
+              { id: "D2_2", leftText: "\\cos(\\pi - x) =", correctVal: "-\\cos x" },
+              { id: "D2_3", leftText: "\\tan(\\pi - x) =", correctVal: "-\\tan x" },
+              { id: "D2_4", leftText: "\\cot(\\pi - x) =", correctVal: "-\\cot x" }
+            ]},
+            { subTitle: "D3. Góc phụ nhau", questions: [
+              { id: "D3_1", leftText: "\\sin\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\cos x" },
+              { id: "D3_2", leftText: "\\cos\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\sin x" },
+              { id: "D3_3", leftText: "\\tan\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\cot x" },
+              { id: "D3_4", leftText: "\\cot\\left(\\frac{\\pi}{2} - x\\right) =", correctVal: "\\tan x" }
+            ]},
+            { subTitle: "D4. Góc hơn kém π", questions: [
+              { id: "D4_1", leftText: "\\sin(\\pi + x) =", correctVal: "-\\sin x" },
+              { id: "D4_2", leftText: "\\cos(\\pi + x) =", correctVal: "-\\cos x" },
+              { id: "D4_3", leftText: "\\tan(\\pi + x) =", correctVal: "\\tan x" },
+              { id: "D4_4", leftText: "\\cot(\\pi + x) =", correctVal: "\\cot x" }
+            ]}
           ],
           cards: [
             { id: "C_D01", latex: "\\cos x", val: "\\cos x" },
@@ -314,11 +366,10 @@
       ]
     };
 
-    // 2. QUẢN LÝ TRẠNG THÁI
     let state = {
       groupInfo: { name: "", className: "", members: "" },
       currentSecId: "sec_A",
-      mappings: {}, // { [questionId]: cardId }
+      mappings: {},
       shuffledCards: {},
       selectedCardId: null,
       submissionId: "SUB_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7)
@@ -334,24 +385,23 @@
     }
 
     function initShuffledVaults() {
-      APP_DATA.sections.forEach(sec => {
-        state.shuffledCards[sec.id] = shuffleArray(sec.cards);
-      });
+      APP_DATA.sections.forEach(sec => state.shuffledCards[sec.id] = shuffleArray(sec.cards));
     }
 
     function saveLocal() {
-      localStorage.setItem("MATH11_REVIEW_STATE", JSON.stringify(state));
+      try { localStorage.setItem("MATH11_REVIEW_STATE", JSON.stringify(state)); }
+      catch (e) { console.warn("Không thể lưu tiến độ trên thiết bị này.", e); }
     }
 
     function loadLocal() {
-      const data = localStorage.getItem("MATH11_REVIEW_STATE");
-      if (data) {
-        try {
+      try {
+        const data = localStorage.getItem("MATH11_REVIEW_STATE");
+        if (data) {
           const parsed = JSON.parse(data);
           state = { ...state, ...parsed };
           return true;
-        } catch (e) { console.error(e); }
-      }
+        }
+      } catch (e) { console.error(e); }
       return false;
     }
 
@@ -369,16 +419,16 @@
       return null;
     }
 
-    // 3. RENDER MÀN HÌNH LÀM BÀI
+    function getQuestions(sec) {
+      return sec.subGroups ? sec.subGroups.flatMap(sg => sg.questions) : sec.questions;
+    }
+
     function renderCurrentSection() {
       const sec = APP_DATA.sections.find(s => s.id === state.currentSecId);
       if (!sec) return;
 
-      const titleEl = document.getElementById("current-section-title");
-      const noteEl = document.getElementById("current-section-note");
-
-      titleEl.textContent = sec.title;
-      noteEl.innerHTML = `$${sec.note}$`;
+      document.getElementById("current-section-title").textContent = sec.title;
+      document.getElementById("current-section-note").innerHTML = `$${sec.note}$`;
 
       document.querySelectorAll(".nav-tab-btn").forEach(btn => {
         const isCur = btn.getAttribute("data-sec") === sec.id;
@@ -390,13 +440,12 @@
       const scrollArea = document.getElementById("exercise-content-scroll");
       scrollArea.innerHTML = "";
 
-      // SVG Đường tròn lượng giác ở Phần B
       if (sec.hasSvg) {
         const svgBox = document.createElement("div");
         svgBox.className = "p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-center gap-4";
         svgBox.innerHTML = `
           <div class="w-48 h-48 shrink-0">
-            <svg viewBox="-1.3 -1.3 2.6 2.6" class="w-full h-full overflow-visible">
+            <svg viewBox="-1.3 -1.3 2.6 2.6" class="w-full h-full overflow-visible" role="img" aria-label="Đường tròn lượng giác">
               <line x1="-1.25" y1="0" x2="1.25" y2="0" stroke="#94a3b8" stroke-width="0.04" />
               <polyline points="1.2,-0.06 1.3,0 1.2,0.06" fill="#94a3b8" />
               <line x1="0" y1="1.25" x2="0" y2="-1.25" stroke="#94a3b8" stroke-width="0.04" />
@@ -405,7 +454,6 @@
               <line x1="0" y1="0" x2="0.64" y2="-0.77" stroke="#dc2626" stroke-width="0.05" />
               <path d="M 0.25 0 A 0.25 0.25 0 0 0 0.16 -0.19" fill="none" stroke="#dc2626" stroke-width="0.03" />
               <line x1="0.64" y1="-0.77" x2="0.64" y2="0" stroke="#64748b" stroke-dasharray="0.06 0.04" stroke-width="0.03" />
-              <line x1="0.64" y1="-0.77" x2="0.64" y2="-0.77" stroke="#64748b" stroke-dasharray="0.06 0.04" stroke-width="0.03" />
               <circle cx="0.64" cy="-0.77" r="0.05" fill="#dc2626" />
               <text x="0.7" y="-0.8" font-size="0.14" font-weight="bold" fill="#dc2626">M(x; y)</text>
               <text x="0.18" y="-0.08" font-size="0.13" fill="#dc2626">α</text>
@@ -416,15 +464,14 @@
               <text x="0.1" y="-1.15" font-size="0.13" fill="#64748b">y</text>
             </svg>
           </div>
-          <div class="text-xs text-slate-600 space-y-1 leading-relaxed">
+          <div class="text-xs text-slate-600 space-y-1 leading-relaxed min-w-0">
             <div class="font-bold text-slate-800">Đường tròn lượng giác tâm O, bán kính R = 1:</div>
             <div>• $M(x; y)$ là điểm biểu diễn góc $\\alpha$ sao cho $\\widehat{xOM} = \\alpha$.</div>
             <div>• Hoành độ của $M$ là $x$; tung độ của $M$ là $y$.</div>
             <div class="text-amber-800 font-semibold pt-1">
               ${sec.conditions ? sec.conditions.map(c => `• $${c}$`).join("<br>") : ""}
             </div>
-          </div>
-        `;
+          </div>`;
         scrollArea.appendChild(svgBox);
       }
 
@@ -433,9 +480,8 @@
           const groupCard = document.createElement("div");
           groupCard.className = "bg-slate-50/70 border border-slate-200 rounded-xl p-3.5 space-y-3";
           groupCard.innerHTML = `<h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider pb-1 border-b border-slate-200">${sg.subTitle}</h3>`;
-          
           const grid = document.createElement("div");
-          grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3";
+          grid.className = "grid grid-cols-1 lg:grid-cols-2 gap-3";
           sg.questions.forEach(q => grid.appendChild(createQuestionRow(q)));
           groupCard.appendChild(grid);
           scrollArea.appendChild(groupCard);
@@ -454,22 +500,20 @@
 
     function createQuestionRow(question) {
       const row = document.createElement("div");
-      row.className = "flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl shadow-xs gap-3";
+      row.className = "flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-white border border-slate-200 rounded-xl gap-3";
 
       const leftLabel = document.createElement("div");
-      leftLabel.className = "text-sm font-semibold text-slate-800 pl-2 select-none";
+      leftLabel.className = "text-sm font-semibold text-slate-800 px-1 select-none min-w-0 break-words";
       leftLabel.innerHTML = `$${question.leftText}$`;
 
       const dropzone = document.createElement("div");
-      dropzone.className = "dropzone w-44 md:w-52 min-h-[44px] border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center p-1 bg-slate-50 transition-colors";
+      dropzone.className = "dropzone w-full sm:w-44 md:w-52 min-h-[48px] border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center p-2 bg-slate-50 transition-colors";
       dropzone.setAttribute("data-qid", question.id);
 
       const placedCardId = state.mappings[question.id];
       if (placedCardId) {
         const cardObj = findCardById(placedCardId);
-        if (cardObj) {
-          dropzone.appendChild(createCardElement(cardObj, true, question.id));
-        }
+        if (cardObj) dropzone.appendChild(createCardElement(cardObj, true, question.id));
       } else {
         dropzone.innerHTML = `<span class="text-[11px] text-slate-400 font-medium select-none">Thả vế phải vào đây</span>`;
       }
@@ -494,27 +538,22 @@
       const usedCardIds = Object.values(state.mappings);
 
       cardList.forEach(card => {
-        if (!usedCardIds.includes(card.id)) {
-          const cardEl = createCardElement(card, false, null);
-          vault.appendChild(cardEl);
-        }
+        if (!usedCardIds.includes(card.id)) vault.appendChild(createCardElement(card, false, null));
       });
 
       if (vault.children.length === 0) {
         vault.innerHTML = `<div class="w-full text-center py-8 text-xs text-slate-400 font-medium">Đã dùng hết thẻ của phần này!</div>`;
       }
-
       renderMath(vault);
     }
 
     function createCardElement(card, isPlacedInZone, qId) {
       const cardEl = document.createElement("div");
-      cardEl.className = `formula-card touch-none-select cursor-grab active:cursor-grabbing px-3 py-2 rounded-lg border text-sm font-medium shadow-xs flex items-center justify-between gap-2 transition-all ${
-        isPlacedInZone 
-          ? "bg-indigo-50 border-indigo-200 text-indigo-900 w-full justify-center relative group" 
+      cardEl.className = `formula-card touch-none-select cursor-grab active:cursor-grabbing px-3 py-2 rounded-lg border text-sm font-medium shadow-sm flex items-center justify-center gap-2 transition-all ${
+        isPlacedInZone
+          ? "bg-indigo-50 border-indigo-200 text-indigo-900 w-full justify-center relative group"
           : "bg-white border-slate-300 hover:border-indigo-400 text-slate-800"
       } ${state.selectedCardId === card.id ? "selected-card" : ""}`;
-
       cardEl.setAttribute("data-card-id", card.id);
       cardEl.innerHTML = `<span>$${card.latex}$</span>`;
 
@@ -522,8 +561,9 @@
         const removeBtn = document.createElement("button");
         removeBtn.className = "absolute right-1.5 text-slate-400 hover:text-rose-600 text-xs px-1 font-bold";
         removeBtn.title = "Gỡ thẻ về kho";
+        removeBtn.setAttribute("aria-label", "Gỡ thẻ về kho");
         removeBtn.innerHTML = "×";
-        removeBtn.addEventListener("click", (e) => {
+        removeBtn.addEventListener("click", e => {
           e.stopPropagation();
           delete state.mappings[qId];
           saveLocal();
@@ -532,16 +572,10 @@
         cardEl.appendChild(removeBtn);
       }
 
-      // Chạm / Click để chọn (Cơ chế tap-to-place dự phòng)
-      cardEl.addEventListener("click", (e) => {
+      cardEl.addEventListener("click", e => {
         e.stopPropagation();
         if (isPlacedInZone) return;
-
-        if (state.selectedCardId === card.id) {
-          state.selectedCardId = null;
-        } else {
-          state.selectedCardId = card.id;
-        }
+        state.selectedCardId = state.selectedCardId === card.id ? null : card.id;
         renderCurrentSection();
       });
 
@@ -549,18 +583,18 @@
       return cardEl;
     }
 
-    // 4. KÉO THẢ MƯỢT BẰNG POINTER EVENTS
     function setupPointerDrag(element, cardId, isPlaced, sourceQId) {
       let isDragging = false;
-      let startX, startY;
+      let startX, startY, pointerId;
       let clone = null;
 
-      element.addEventListener("pointerdown", (e) => {
-        if (e.target.tagName === 'BUTTON') return;
+      element.addEventListener("pointerdown", e => {
+        if (e.target.tagName === "BUTTON") return;
         isDragging = true;
+        pointerId = e.pointerId;
         startX = e.clientX;
         startY = e.clientY;
-        element.setPointerCapture(e.pointerId);
+        try { element.setPointerCapture(e.pointerId); } catch (err) {}
 
         clone = element.cloneNode(true);
         clone.classList.add("fixed", "pointer-events-none", "z-50", "opacity-90", "shadow-xl", "bg-white");
@@ -571,7 +605,7 @@
         element.classList.add("ghost-card");
       });
 
-      element.addEventListener("pointermove", (e) => {
+      element.addEventListener("pointermove", e => {
         if (!isDragging || !clone) return;
         clone.style.left = (e.clientX - element.offsetWidth / 2) + "px";
         clone.style.top = (e.clientY - element.offsetHeight / 2) + "px";
@@ -581,7 +615,7 @@
       function handleDragEnd(e) {
         if (!isDragging) return;
         isDragging = false;
-        try { element.releasePointerCapture(e.pointerId); } catch(err){}
+        try { element.releasePointerCapture(pointerId); } catch (err) {}
         element.classList.remove("ghost-card");
         if (clone) { clone.remove(); clone = null; }
 
@@ -591,10 +625,8 @@
         if (dropzone) {
           const targetQId = dropzone.getAttribute("data-qid");
           assignCardToQuestion(cardId, targetQId, sourceQId);
-        } else {
-          if (isPlaced && Math.hypot(e.clientX - startX, e.clientY - startY) > 50) {
-            delete state.mappings[sourceQId];
-          }
+        } else if (isPlaced && Math.hypot(e.clientX - startX, e.clientY - startY) > 50) {
+          delete state.mappings[sourceQId];
         }
         saveLocal();
         renderCurrentSection();
@@ -615,15 +647,14 @@
     }
 
     function findValidDropzoneUnder(x, y) {
-      const elements = document.elementsFromPoint(x, y);
-      return elements.find(el => el.classList.contains("dropzone"));
+      return document.elementsFromPoint(x, y).find(el => el.classList.contains("dropzone"));
     }
 
     function assignCardToQuestion(cardId, targetQId, sourceQId = null) {
       const existingInTarget = state.mappings[targetQId];
       if (sourceQId) {
-        state.mappings[sourceQId] = existingInTarget || undefined;
-        if (!existingInTarget) delete state.mappings[sourceQId];
+        if (existingInTarget) state.mappings[sourceQId] = existingInTarget;
+        else delete state.mappings[sourceQId];
       }
       state.mappings[targetQId] = cardId;
       saveLocal();
@@ -632,17 +663,13 @@
     function updateProgress() {
       const count = Object.keys(state.mappings).length;
       document.getElementById("progress-indicator").textContent = `${count}/${APP_DATA.meta.totalQuestions}`;
-      
       const submitBtn = document.getElementById("btn-submit-work");
-      submitBtn.disabled = (count < APP_DATA.meta.totalQuestions);
-      if (count < APP_DATA.meta.totalQuestions) {
-        submitBtn.title = `Còn ${APP_DATA.meta.totalQuestions - count} công thức chưa ghép`;
-      } else {
-        submitBtn.title = "Đã hoàn thành! Bấm để nộp bài.";
-      }
+      submitBtn.disabled = count < APP_DATA.meta.totalQuestions;
+      submitBtn.title = count < APP_DATA.meta.totalQuestions
+        ? `Còn ${APP_DATA.meta.totalQuestions - count} công thức chưa ghép`
+        : "Đã hoàn thành! Bấm để nộp bài.";
     }
 
-    // 5. KHỞI CHẠY VÀ KẾT NỐI
     document.addEventListener("DOMContentLoaded", () => {
       const restored = loadLocal();
       if (!restored || !state.shuffledCards || Object.keys(state.shuffledCards).length === 0) {
@@ -658,7 +685,7 @@
         });
       });
 
-      document.getElementById("group-form").addEventListener("submit", (e) => {
+      document.getElementById("group-form").addEventListener("submit", e => {
         e.preventDefault();
         state.groupInfo.name = document.getElementById("input-group-name").value.trim();
         state.groupInfo.className = document.getElementById("input-class-name").value.trim();
@@ -667,7 +694,6 @@
 
         document.getElementById("badge-group").textContent = state.groupInfo.name;
         document.getElementById("badge-class").textContent = state.groupInfo.className;
-
         document.getElementById("screen-welcome").classList.add("hidden");
         document.getElementById("screen-exercise").classList.remove("hidden");
         renderCurrentSection();
@@ -677,13 +703,8 @@
         if (!confirm("Bạn có muốn trả toàn bộ các thẻ của phần này về kho?")) return;
         const curSec = APP_DATA.sections.find(s => s.id === state.currentSecId);
         if (curSec) {
-          const qIds = [];
-          if (curSec.subGroups) {
-            curSec.subGroups.forEach(sg => sg.questions.forEach(q => qIds.push(q.id)));
-          } else {
-            curSec.questions.forEach(q => qIds.push(q.id));
-          }
-          qIds.forEach(qid => delete state.mappings[qid]);
+          getQuestions(curSec).forEach(q => delete state.mappings[q.id]);
+          state.selectedCardId = null;
           saveLocal();
           renderCurrentSection();
         }
@@ -709,11 +730,7 @@
 
         const answersList = [];
         APP_DATA.sections.forEach(sec => {
-          const questions = sec.subGroups 
-            ? sec.subGroups.flatMap(sg => sg.questions) 
-            : sec.questions;
-
-          questions.forEach(q => {
+          getQuestions(sec).forEach(q => {
             const cardId = state.mappings[q.id];
             const cardObj = findCardById(cardId);
             answersList.push({
@@ -737,20 +754,16 @@
           answers: answersList
         };
 
-        // Gửi qua Apps Script hoặc chạy Mock nếu đang mở file trực tiếp
         if (typeof google !== "undefined" && google.script && google.script.run) {
           google.script.run
-            .withSuccessHandler((res) => {
+            .withSuccessHandler(res => {
               confirmBtn.disabled = false;
               confirmBtn.textContent = "Xác nhận nộp";
               document.getElementById("modal-confirm").classList.add("hidden");
-              if (res.success) {
-                showSuccessScreen();
-              } else {
-                alert("Lỗi máy chủ: " + res.error);
-              }
+              if (res && res.success) showSuccessScreen();
+              else alert("Lỗi máy chủ: " + (res && res.error ? res.error : "Không xác định."));
             })
-            .withFailureHandler((err) => {
+            .withFailureHandler(err => {
               confirmBtn.disabled = false;
               confirmBtn.textContent = "Xác nhận nộp";
               document.getElementById("modal-confirm").classList.add("hidden");
@@ -758,13 +771,12 @@
             })
             .submitStudentAnswers(payload);
         } else {
-          // Chế độ mô phỏng khi mở file trực tiếp trên trình duyệt
-          setTimeout(() => {
+          window.setTimeout(() => {
             confirmBtn.disabled = false;
             confirmBtn.textContent = "Xác nhận nộp";
             document.getElementById("modal-confirm").classList.add("hidden");
-            showSuccessScreen();
-          }, 600);
+            alert("Đây là chế độ xem thử: bài làm chưa được gửi đến giáo viên.");
+          }, 300);
         }
       });
 
